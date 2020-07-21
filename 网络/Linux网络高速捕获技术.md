@@ -6,7 +6,7 @@
 
 Linux网络协议栈是处理网络数据包的典型系统，它包含了从物理层直到应用层的全过程。
 
-<img src="https://img-blog.csdnimg.cn/20191119150537100.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2dlbmd6aGlrdWkxOTky,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述" style="zoom: 30%;" />
+<img src="Linux网络高速捕获技术.assets/20191119150537100.jpg" alt="在这里插入图片描述" style="zoom: 30%;" />
 
 - 数据包到达网卡设备
 - 网卡设备依据配置进行DMA操作。（第1次拷贝：网卡寄存器->内核为网卡分配的缓冲区`ring buffer`）
@@ -140,7 +140,7 @@ DPDK支持的CPU体系架构：x86、ARM、PowerPC（PPC）。DPDK支持的网�
 
 ​		UIO 设备的实现机制其实是对用户空间暴露文件接口，比如当注册一个 UIO 设备 uioX，就会出现文件 /dev/uioX，对该文件的读写就是对设备内存的读写。除此之外，对设备的控制还可以通过 /sys/class/uio 下的各个文件的读写来完成。
 
-<img src="https://images2017.cnblogs.com/blog/431521/201802/431521-20180202125414796-706128566.png" alt="img" style="zoom: 50%;" />
+<img src="Linux网络高速捕获技术.assets/431521-20180202125414796-706128566.png" alt="img" style="zoom: 50%;" />
 
 **2、内存池技术**
 
@@ -176,7 +176,7 @@ dpdk 基于多核架构，一般会有主从核之分，主核负责完成各个
 
 ​		Netmap 使用多种技术比如：内存映射、环形队列、批量处理等来减少内核空间以及用户空间内存申请和释放、避免内存在内核空间和用户空间的拷贝以及减少系统调用。
 
-![rizzo1](https://pic.aikaiyuan.com/wp-content/uploads/2014/07/rizzo1.png)
+![rizzo1](Linux网络高速捕获技术.assets/rizzo1.png)
 
 ​		Netmap是基于零拷贝思想的高速网络I/O架构，它能够在千兆或万兆网卡上达到网卡的线速收发包速率。并且能够有效地节省cpu等计算机资源。
 
@@ -200,7 +200,7 @@ dpdk 基于多核架构，一般会有主从核之分，主核负责完成各个
 
 > PF_RING是Luca研究出来的基于Linux内核级的高效数据包捕获技术。简单来说PF_RING 是一个高速数据包捕获库,通过它可以实现将通用 PC 计算机变成一个有效且便宜的网络测量工具箱,进行数据包和现网流量的分析和操作。同时支持调用用户级别的API来创建更有效的应用程序。
 
-<img src="https://upload-images.jianshu.io/upload_images/3406513-5e5948fb4233af3b.png?imageMogr2/auto-orient/strip|imageView2/2/w/1028/format/webp" alt="img" style="zoom: 67%;" />
+<img src="Linux网络高速捕获技术.assets/3406513-5e5948fb4233af3b.png" alt="img" style="zoom: 67%;" />
 
 ​		`PF_RING`是拥有一套完整开发接口的高速数据包捕捉库，与我们熟知的`libpcap`十分相似，但其性能要优于`libpcap`。关于`libpcap`的实现机制可以参考[`libpcap`实现机制及接口函数](https://www.jianshu.com/p/ed6db49a3428)。
 
@@ -213,7 +213,7 @@ dpdk 基于多核架构，一般会有主从核之分，主核负责完成各个
 
 ​		**PF_RING提出的核心解决方案便是减少报文在传输过程中的拷贝次数**。由下图我们可以直观的看到不同技术下对数据拷贝的优化是不同的。接下来将围绕这张图的实现路径解释PF_RING和PF_RING ZC库的实现机制。
 
-![image-20200616194534807](C:\Users\Costco424\AppData\Roaming\Typora\typora-user-images\image-20200616194534807.png)
+![image-20200616194534807](Linux网络高速捕获技术.assets/image-20200616194534807.png)
 
 <center>
     <div style="color:orange; border-bottom: 1px solid #d9d9d9;
@@ -233,7 +233,7 @@ dpdk 基于多核架构，一般会有主从核之分，主核负责完成各个
 > 4、用户空间可以直接访问这个环形缓冲区中的数据
 > 5、当有新的数据包到来的时候，可以直接覆盖掉已经被用户空间读取过的那个数据包的空间
 
-<img src="C:\Users\Costco424\AppData\Roaming\Typora\typora-user-images\image-20200616204106642.png" alt="image-20200616204106642" style="zoom:50%;" />
+<img src="Linux网络高速捕获技术.assets/image-20200616204106642.png" alt="image-20200616204106642" style="zoom:50%;" />
 
 #### PF_RING ZC
 
@@ -242,7 +242,7 @@ dpdk 基于多核架构，一般会有主从核之分，主核负责完成各个
 > ​		这将性能更好，因为CPU周期的仅用于操作数据包，而不是把数据包从网卡挪走。
 > 其缺点是，只有一个应用可以在某个时间打开DMA ring（请注意，现在的网卡可以具有多个RX / TX队列，从而就可以在每个队列上同时一个应用程序），换而言之，用户态的多个应用需要彼此沟通才能分发数据包。
 
-<img src="C:\Users\Costco424\AppData\Roaming\Typora\typora-user-images\image-20200616204412414.png" alt="image-20200616204412414" style="zoom:50%;" />
+<img src="Linux网络高速捕获技术.assets/image-20200616204412414.png" alt="image-20200616204412414" style="zoom:50%;" />
 
 用户空间创建PF_RING套接字时
 

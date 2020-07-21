@@ -53,7 +53,7 @@
 | <stl_alloc.h>     | 负责内存空间的配置与释放 | allocate()、deallocate()reallocate()、refill()  malloc()、free() |
 | <stl_construct.h> | 负责对象内容的构造与析构 | construct()、destory()                                       |
 
- <img src="C:\Users\Costco424\AppData\Roaming\Typora\typora-user-images\image-20200625214917113.png" alt="image-20200625214917113" style="zoom: 67%;" />![image-20200625215030136](C:\Users\Costco424\AppData\Roaming\Typora\typora-user-images\image-20200625215030136.png)
+ <img src="C++ STL.assets/image-20200625214917113.png" alt="image-20200625214917113" style="zoom: 67%;" />![image-20200625215030136](C++ STL.assets/image-20200625215030136.png)
 
  
 
@@ -119,9 +119,7 @@ STL内存管理使用二级内存配置器。
 
 二级内存池采用了16个空闲链表，这里的16个空闲链表分别管理大小为8、16、24......120、128的数据块。这里空闲链表节点的设计十分巧妙，这里用了一个联合体既可以表示下一个空闲数据块（存在于空闲链表中）的地址，也可以表示已经被用户使用的数据块（不存在空闲链表中）的地址。
 
- 
 
-<img src="file:///C:\Users\COSTCO~1\AppData\Local\Temp\msohtmlclip1\02\clip_image002.png" alt="img" style="zoom:67%;" />
 
 
 
@@ -165,7 +163,7 @@ STL内存管理使用二级内存配置器。
 
 **iterator-traits**
 
-<img src="C:\Users\Costco424\AppData\Roaming\Typora\typora-user-images\image-20200625220939669.png" alt="image-20200625220939669" style="zoom:67%;" />
+<img src="C++ STL.assets/image-20200625220939669.png" alt="image-20200625220939669" style="zoom:67%;" />
 
 最常用到的迭代器相应型别有五种：value type，difference type，pointer，reference，iterator category。如果希望所开发的容器与STL结合，一定要为容器的迭代器定义五种型别。“特性萃取机”traits会很忠实地将原汁原味地榨取出来。
 
@@ -280,7 +278,7 @@ struct iterator_ traits<const T*> {
 
 ​    vector的实现技术，关键在于其对大小的控制以及重新配置时的数据移动效率。
 
-![image-20200625214533651](C:\Users\Costco424\AppData\Roaming\Typora\typora-user-images\image-20200625214533651.png)
+![image-20200625214533651](C++ STL.assets/image-20200625214533651.png)
 
 #### list
 
