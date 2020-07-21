@@ -1,14 +1,44 @@
 # TCP协议
 
+## 考察点
+
+-  OSI网络体系结构与TCP/IP协议模型，及各层协议举例
+
+- [TCP与UDP之间的区别](https://link.zhihu.com/?target=http%3A//blog.csdn.net/shanghairuoxiao/article/details/68927070)
+            (1) IP首部，TCP首部，UDP首部
+            (2) TCP和UDP区别
+            (3) TCP和UDP应用场景，为什么各自适用这些场景
+            ~~(4) 如何实现可靠的UDP~~
+
+- [TCP三次握手与四次挥手](https://link.zhihu.com/?target=http%3A//blog.csdn.net/shanghairuoxiao/article/details/68927100)
+
+- [详细说明TCP状态迁移过程](https://link.zhihu.com/?target=http%3A//blog.csdn.net/shanghairuoxiao/article/details/68927100)
+            (1) 三次握手和四次挥手状态变化；
+            (2) 2MSL是什么状态？作用是什么？
+            (3)三次握手为什么不是两次或者四次？
+
+- [TCP相关技术](https://link.zhihu.com/?target=http%3A//blog.csdn.net/shanghairuoxiao/article/details/68927100) / TCP协议如何保证传输的可靠性
+
+- 1. TCP重发机制，重传的过程与结果，一直重传失败会怎样
+  2. TCP的拥塞控制使用的算法和具体过程（拥塞控制）
+  3. TCP的窗口滑动（流量控制      flow control）
+
+- [TCP客户与服务器模型，用到哪些函数](https://link.zhihu.com/?target=http%3A//blog.csdn.net/shanghairuoxiao/article/details/69803044)、函数的参数
+
+  - 这些函数如何与TCP协议栈过程对应（三次握手、四次挥手过程）
+  - listen()函数和accpet()函数在协议帧底层是完成了什么过程
+
+- [UDP客户与服务器模型，用到哪些函数](https://link.zhihu.com/?target=http%3A//blog.csdn.net/shanghairuoxiao/article/details/69951345)
+
 ## 网络模型
 
 ### 七层网络模型
 
-![image-20200619221653971](C:\Users\Costco424\AppData\Roaming\Typora\typora-user-images\image-20200619221653971.png)
+![image-20200619221653971](TCP.assets/image-20200619221653971.png)
 
 七层网络模型在数据的传输过程中会对数据进行封装。
 
-<img src="C:\Users\Costco424\AppData\Roaming\Typora\typora-user-images\image-20200619210718567.png" alt="image-20200619210718567" style="zoom:67%;" />
+<img src="TCP.assets/image-20200619210718567.png" alt="image-20200619210718567" style="zoom:67%;" />
 
 
 
@@ -94,7 +124,7 @@ Nagle算法是从发送端角度考虑减少了数据包的个数，时延应答
 
 TCP报文头部的格式如下图：
 
-<img src="https://s4.51cto.com/images/blog/201808/23/15258fd05883b537955fbe56eb7f9afe.png?x-oss-process=image/watermark,size_16,text_QDUxQ1RP5Y2a5a6i,color_FFFFFF,t_100,g_se,x_10,y_10,shadow_90,type_ZmFuZ3poZW5naGVpdGk=" alt="TCP 包头详解" style="zoom:67%;" />
+<img src="TCP.assets/15258fd05883b537955fbe56eb7f9afe.png" alt="TCP 包头详解" style="zoom:67%;" />
 
 - **16位端口号**：`port number`告知主机该报文是来自哪里（源端口）以及传给那个上层协议或应用程序（目的端口）的。所有知名服务器使用的端口号都定义在/etc/services文件中。
 - **32位序列号**：`sequence number` 一次TCP通信（从TCP建立连接到断开）过程中某一个传输方向上的字节流的每个字节的编号。即TCP通信过程中的seq序列号。
@@ -142,7 +172,7 @@ TCP报文头部的格式如下图：
 
 ### 三次握手与四次挥手
 
-<img src="C:\Users\Costco424\AppData\Roaming\Typora\typora-user-images\image-20200620165230910.png" alt="image-20200620165230910" style="zoom:67%;" />
+<img src="TCP.assets/image-20200620165230910.png" alt="image-20200620165230910" style="zoom:67%;" />
 
 ### 建立连接
 
@@ -195,7 +225,7 @@ TCP有一个特别的概念叫半关闭。也就是说，TCP的连接时全双�
 
 ### TCP状态流转
 
-<img src="C:\Users\Costco424\AppData\Roaming\Typora\typora-user-images\image-20200620174557793.png" alt="image-20200620174557793" style="zoom: 67%;" />
+<img src="TCP.assets/image-20200620174557793.png" alt="image-20200620174557793" style="zoom: 67%;" />
 
 - `CLOSED` 表示初始状态
 - `LISTEN` 表示服务器端的某个socket处于监听状态，可以接受连接
@@ -220,6 +250,48 @@ TCP有一个特别的概念叫半关闭。也就是说，TCP的连接时全双�
 > 可靠地实现TCP全双工连接的终止	
 > 允许老的重复节点在网络中消逝  ->在TIME_WAIT期间不允许发起新的连接
 
+## TCP定时器
+
+　　TCP中有四种计时器（Timer），分别为：
+
+　　　　1.重传计时器：Retransmission Timer
+
+　　　　2.坚持计时器：Persistent Timer
+
+　　　　3.保活计时器：Keeplive Timer
+
+　　　　4.时间等待计时器：Timer_Wait Timer
+
+### 重传计时器
+
+　　大家都知道TCP是保证数据可靠传输的。怎么保证呢？带确认的重传机制。在滑动窗口协议中，接受窗口会在连续收到的包序列中的最后一个包向接收端发送一个ACK，当网络拥堵的时候，发送端的数据包和接收端的ACK包都有可能丢失。TCP为了保证数据可靠传输，就规定在重传的“时间片”到了以后，如果还没有收到对方的ACK，就重发此包，以避免陷入无限等待中。
+
+　　当TCP发送报文段时，就创建该特定报文的重传计时器。可能发生两种情况：
+
+　　1.若在计时器截止时间到之前收到了对此特定报文段的确认，则撤销此计时器。
+
+　　2.若在收到了对此特定报文段的确认之前计时器截止时间到，则重传此报文段，并将计时器复位。
+
+### 持久计时器
+
+　　先来考虑一下情景：发送端向接收端发送数据包知道接受窗口填满了，然后接受窗口告诉发送方接受窗口填满了停止发送数据。此时的状态称为“零窗口”状态，发送端和接收端窗口大小均为0.直到接受TCP发送确认并宣布一个非零的窗口大小。但这个确认会丢失。我们知道TCP中，对确认是不需要发送确认的。若确认丢失了，接受TCP并不知道，而是会认为他已经完成了任务，并等待着发送TCP接着会发送更多的报文段。但发送TCP由于没有收到确认，就等待对方发送确认来通知窗口大小。双方的TCP都在永远的等待着对方。
+
+　　要打开这种死锁，TCP为每一个链接使用一个持久计时器。当发送TCP收到窗口大小为0的确认时，就坚持启动计时器。当坚持计时器期限到时，发送TCP就发送一个特殊的报文段，叫做探测报文。这个报文段只有一个字节的数据。他有一个序号，但他的序号永远不需要确认；甚至在计算机对其他部分的数据的确认时该序号也被忽略。探测报文段提醒接受TCP：确认已丢失，必须重传。
+
+　　坚持计时器的值设置为重传时间的数值。但是，若没有收到从接收端来的响应，则需发送另一个探测报文段，并将坚持计时器的值加倍和复位。发送端继续发送探测报文段，将坚持计时器设定的值加倍和复位，直到这个值增大到门限值（通常是60秒）为止。在这以后，发送端每个60秒就发送一个探测报文，直到窗口重新打开。
+
+### 保活计时器
+
+　　保活计时器使用在某些实现中，用来防止在两个TCP之间的连接出现长时间的空闲。假定客户打开了到服务器的连接，传送了一些数据，然后就保持静默了。也许这个客户出故障了。在这种情况下，这个连接将永远的处理打开状态。
+
+　　要解决这种问题，在大多数的实现中都是使服务器设置保活计时器。每当服务器收到客户的信息，就将计时器复位。通常设置为两小时。若服务器过了两小时还没有收到客户的信息，他就发送探测报文段。若发送了10个探测报文段（每一个像个75秒）还没有响应，就假定客户除了故障，因而就终止了该连接。
+
+　　这种连接的断开当然不会使用四次握手，而是直接硬性的中断和客户端的TCP连接。
+
+### 时间等待计时器
+
+　　时间等待计时器是在四次握手的时候使用的。四次握手的简单过程是这样的：假设客户端准备中断连接，首先向服务器端发送一个FIN的请求关闭包（FIN=final），然后由established过渡到FIN-WAIT1状态。服务器收到FIN包以后会发送一个ACK，然后自己有established进入CLOSE-WAIT.此时通信进入半双工状态，即留给服务器一个机会将剩余数据传递给客户端，传递完后服务器发送一个FIN+ACK的包，表示我已经发送完数据可以断开连接了，就这便进入LAST_ACK阶段。客户端收到以后，发送一个ACK表示收到并同意请求，接着由FIN-WAIT2进入TIME-WAIT阶段。服务器收到ACK，结束连接。此时（即客户端发送完ACK包之后），客户端还要等待2MSL（MSL=maxinum segment lifetime最长报文生存时间，2MSL就是两倍的MSL）才能真正的关闭连接。
+
 ## TCP超时重传
 
 TCP超时讨论在异常网络的转况下（开始出现超时或丢包），TCP如何控制数据传输以保证其承诺的可靠服务。
@@ -237,13 +309,24 @@ TCP是可靠的传输协议，意味着必须按序，无差错的传送数据�
 
 ### 超时重传
 
-当一个包被发送后，就开启一个定时器，如果定时时间到了，还未收到能确认该发送包的应答包，就重传一份数据。注意收到的应答包可能是该包也可能是后面包的，但是只要能确认该包被收到就行。另外如果，是因为网络延时造成重传，则接受端收到重复数据包后丢弃该包。
+当一个包被发送后，就开启一个定时器，如果定时时间（RTO）到了，还未收到能确认该发送包的应答包，就重传一份数据。注意收到的应答包可能是该包也可能是后面包的，但是只要能确认该包被收到就行。另外如果，是因为网络延时造成重传，则接受端收到重复数据包后丢弃该包。
+
+由于不同的网络情况不一样，不可能设置一样的RTO，实际中RTO是根据网络中的RTT（传输往返时间）来自适应调整的。具体关系参考相关算法。
+
+数据被重发以后若还是收不到应答，则进行再次发送。此时等待确认应答时间会以2倍、4倍的指数函数延长。
+ 此外，数据也不会被无限、反复的重发。达到一定的重发次数之后，如果仍然没有任何确认应答返回，就会判断为网络或者对端主机发生了异常，强制关闭连接。
+
+> **Linux设置**
+>
+> 最小重传时间是200ms
+> 最大重传时间是120s
+> 重传次数为15
 
 ### 快速重传
 
 当如果发送端收到一个包的三次应答包后，立即重传，比超时重传更高效。
 
-<img src="https://img-blog.csdn.net/20170401195948811?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvc2hhbmdoYWlydW94aWFv/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="这里写图片描述" style="zoom: 80%;" />
+<img src="TCP.assets/20170401195948811" alt="这里写图片描述" style="zoom: 80%;" />
 
 ## TCP滑动窗口
 
@@ -259,11 +342,11 @@ TCP是可靠的传输协议，意味着必须按序，无差错的传送数据�
 
 ​		对于TCP会话的发送方，任何时候在其发送缓存内的数据都可以分为4类：①已经发送并得到对端ACK；②已经发送但还未收到对端ACK；③未发送但对端允许发送；④未发送且对端不允许发送。其中，“已发送但还未接收到对端ACK”和“未发送但对端允许发送”这两部分数据称之为发送窗口。四部分数据如下所示。
 
-<img src="C:\Users\Costco424\AppData\Roaming\Typora\typora-user-images\image-20200620205025709.png" alt="image-20200620205025709" style="zoom:67%;" />
+<img src="TCP.assets/image-20200620205025709.png" alt="image-20200620205025709" style="zoom:67%;" />
 
 ​		当收到接收方新的ACK对于发送窗口中后续字节的确认时，滑动窗口原理如下图：
 
-<img src="C:\Users\Costco424\AppData\Roaming\Typora\typora-user-images\image-20200620210040977.png" alt="image-20200620210040977" style="zoom:67%;" />
+<img src="TCP.assets/image-20200620210040977.png" alt="image-20200620210040977" style="zoom:67%;" />
 
 ​		对于TCP接收方，在某一时刻它的接收缓存内存在3中状态：①已接收；②未接收准备接收；③未接收并准备接收（由于ACK直接由TCP协议栈回复，默认无应用延迟，不存在“已接收未回复ACK”）。其中“未接收准备接收”称之为接收窗口。
 
@@ -313,20 +396,20 @@ TCP是可靠的传输协议，意味着必须按序，无差错的传送数据�
 
   ​	拥塞控制具体过程如下图所示
 
-![image-20200706234450639](C:\Users\Costco424\AppData\Roaming\Typora\typora-user-images\image-20200706234450639.png)
+![image-20200706234450639](TCP.assets/image-20200706234450639.png)
 
 ### 快重传和快恢复
 
 ​		快重传要求接收方在收到一个失序的报文段后就立即发出重复确认（为的是使发送方尽早知道报文有没有到达对方），而不要等到自己发送数据时捎带确认，快重传算法规定，发送方只要一连收到三个重复确认就应当立即重传对方尚未手到的报文段，而不必继续等待设置的重传。
 
-<img src="https://img-blog.csdn.net/20170401195948811?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvc2hhbmdoYWlydW94aWFv/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="这里写图片描述" style="zoom:67%;" />
+<img src="TCP.assets/20170401195948811" alt="这里写图片描述" style="zoom:67%;" />
 
 快重传配合使用的还有快恢复算法：
 
 - 当发送方连续收到三个重复确认时，就执行“乘法减小”算法，把`ssthresh`门限减半。但接下去并不执行慢开始算法。
 - 考虑到如果网络出现拥塞的话就不会收到好几个重复的确认，所以发送方现在认为网络可能没有出现拥塞。所以此时不执行慢启动算法，而是将`cwnd`设置为`ssthresh`的大小，然后执行拥塞避免算法。
 
-![](https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1592735439233&di=9ebe58c66159a7521f7ff68fe192fc2b&imgtype=0&src=http%3A%2F%2Fblog.chinaunix.net%2Fattachment%2F201402%2F17%2F26275986_1392629231ue0O.png)
+![](TCP.assets/timg)
 
 从整体上来讲，TCP拥塞控制窗口变化的原则是加法增大、乘法减小。可以看出TCP的该原则可以较好地保证流之间的公平性，因为一旦出现丢包，那么立即减半退让，可以给其他新建流留有足够的空间，从而保证整个的公平性。
 
@@ -334,11 +417,9 @@ TCP是可靠的传输协议，意味着必须按序，无差错的传送数据�
 
 ## 网络编程API
 
-<img src="file:///C:\Users\COSTCO~1\AppData\Local\Temp\msohtmlclip1\02\clip_image001.png" alt="socket()  connect()  read(  close( y shutdown()  141 9-8  socket()  bind( )  listen()  accept( )  read(  Socket " style="zoom:80%;" />
-
 ### socket()函数
 
-<img src="C:\Users\Costco424\AppData\Roaming\Typora\typora-user-images\image-20200621180842696.png" alt="image-20200621180842696" style="zoom: 67%;" />
+<img src="TCP.assets/image-20200621180842696.png" alt="image-20200621180842696" style="zoom: 67%;" />
 
 ​		创建socket对象
 
@@ -557,4 +638,4 @@ TCP粘包是指发送方发送的若干包数据到接收方接收时粘成一�
 
   封包就是给一段数据加上包头，这样一来数据包就分为包头和包体两部分内容。包头实际就是大小固定的结构体，其中有个结构体成员变量表示包体的长度，其他结构体成员需要自己定义。
 
-  利用底层的缓冲区进行拆包时，由于TCP也维护了一个缓冲区，所以可以利用TCP缓冲区来缓冲发送的数据，这样就不需要为每一个连接分配一个缓冲区了，对于利用缓冲区拆包，也就是循环不停地接收包头给出的数据，知道收够为止，这就是一个完整的TCP包。
+  利用底层的缓冲区进行拆包时，由于TCP也维护了一个缓冲区，所以可以利用TCP缓冲区来缓冲发送的数据，这样就不需要为每一个连接分配一个缓冲区了，对于利用缓冲区拆包，也就是循环不停地接收包头给出的数据，知道收够为止，这就是一个完整的TCP包。	

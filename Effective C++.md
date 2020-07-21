@@ -310,7 +310,7 @@ copying函数（包括copying构造函数和copy assignment操作符）有可能
 
 
 
-![image-20200701165934001](C:\Users\Costco424\AppData\Roaming\Typora\typora-user-images\image-20200701165934001.png)
+![image-20200701165934001](./Effective C++.assets/image-20200701165934001.png)
 
 熟悉C/C++开发、STL标准模板库、C++11标准
 

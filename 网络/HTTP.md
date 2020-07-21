@@ -1,5 +1,28 @@
 # HTTP/HTTPS
 
+## HTTP面试题测试
+
+- Get和Post区别
+- HTTP与HTTPS区别
+- HTTP通信过程
+- 游览器输入一个地址。到页面展示中间经历了哪些步骤？
+- cookies机制和session机制的区别：
+- HTTP请求报文与响应报文格式
+- 一次完整的HTTP请求所经历的7个步骤
+- ~~HTTP优化方案~~
+- 不同版本的HTTP区别
+- HTTP优点缺点
+- URI和URL的区别
+- 如何判断是否为http
+- 长连接与短连接的区别，以及应用场景
+- ~~常见web攻击~~
+- ~~站内跳转和外部重定向有何区别~~
+- HTTP的keep-alive是干什么的？
+- 关于Http 2.0 你知道多少？
+- ~~讲讲304缓存的原理~~
+- 对称加密、非对称加密
+- TLS/SSL
+
 ## HTTP概述
 
 > 1989年，蒂姆·伯纳斯 - 李（Tim Berners-Lee）在论文中提出可以在互联网上构建超链接文档，并提出了三点.
@@ -14,7 +37,7 @@ HTTP：传输超文本的文本传输协议
 
 ​		`HTTP(hypertext transport protocol)`翻译过来为"超文本传输协议"，文本可以理解为简单的字符文字组合，也可以理解为更为复杂的音频或者图像等。那么将这个词语拆分为三个部分。
 
-<img src="https://mmbiz.qpic.cn/mmbiz_png/NdsdouZwicacugPgPuxCgLUTf9ErM0xpa7wLExBeOPwYvyea0PDosCAMibbmSJkxcQGUjLYlEQGIiagdSxC0673RQ/640?wx_fmt=png&amp;tp=webp&amp;wxfrom=5&amp;wx_lazy=1&amp;wx_co=1" alt="img" style="zoom:50%;" />
+<img src="HTTP.assets/640" alt="img" style="zoom:50%;" />
 
 ​		"超文本"和"文本"相比多了一个字"超"，这样看来比文本丰富，因为它可以将多种文本/图像等进行混合，更重要的是可以从一个文本跳转到另一个文本(文本连接)。
 
@@ -60,7 +83,7 @@ HTTP/1.0
 - 服务端响应请求，数据以 ASCII 字符流返回给客戶端
 - 传输完成，断开连接。
 
-<img src="https://mmbiz.qpic.cn/mmbiz_png/NdsdouZwicacugPgPuxCgLUTf9ErM0xpah4SCcBx6dKhXSccJaR4Umjxoz3FSjKnn3ZRhUibHviaWcgqx9rDpZSVA/640?wx_fmt=png&amp;tp=webp&amp;wxfrom=5&amp;wx_lazy=1&amp;wx_co=1" alt="img" style="zoom:50%;" />
+<img src="HTTP.assets/image-20200713123316277.png" alt="image-20200713123316277" style="zoom: 50%;" />
 
 ### HTTP/1.0
 
@@ -72,7 +95,7 @@ HTTP/1.0
 - 增加响应状态码，标记出错的原因
 - 提供国际化(不同语言)支持
 
-<img src="https://mmbiz.qpic.cn/mmbiz_png/NdsdouZwicacugPgPuxCgLUTf9ErM0xpa9mgpSKUWSQiaGicCySuYzdWnJvCky55tkWibKictmt8f93MCm3FvTmcUOA/640?wx_fmt=png&amp;tp=webp&amp;wxfrom=5&amp;wx_lazy=1&amp;wx_co=1" alt="img" style="zoom:50%;" />
+<img src="HTTP.assets/image-20200713123450750.png" alt="image-20200713123450750" style="zoom:50%;" />
 
 ### HTTP/1.1
 
@@ -84,7 +107,7 @@ HTTP/1.0
 
 随着文件越来越大，图片等信息越来越复杂，如果每一次上传下载文件都需要建立连接断开连接的过程将增加大量的开销。为此，提出了持久连接，也就是一次TCP连接可以具有多个HTTP请求。当然持久连接是可选择的，如果考虑关闭，只需要使用Connecttion:close关闭即可。
 
-<img src="https://mmbiz.qpic.cn/mmbiz_png/NdsdouZwicacugPgPuxCgLUTf9ErM0xpaIWI2ricDYKO0D7DGOhpgC3IZKvMF4jFzib1QbyIcUQhqOtkyMbf00sUQ/640?wx_fmt=png&amp;tp=webp&amp;wxfrom=5&amp;wx_lazy=1&amp;wx_co=1" alt="img" style="zoom: 50%;" />
+<img src="HTTP.assets/image-20200713123512560.png" alt="image-20200713123512560" style="zoom:50%;" />
 
 ​		在电商系统中，经常会因为促销活动导致流量飙升，为了缓解流量，其中有种方法即加缓存或者加服务器。如果是单台服务器负载过大，数据库可能分库分表。数据结构算法中分而治之方法亦是如此。那么HTTP中，同样的道理，如果文件太大，就大文件切分为小文件块发送。
 
@@ -125,7 +148,7 @@ HTTP/2看似很完美了吧，但是Google轮子哥可不服，其他人在研�
 
 > 客户端与服务端进行交互的信息为报文。客户端为请求报文，服务端为响应报文。
 
-![报文层次结构](https://mmbiz.qpic.cn/mmbiz_png/NdsdouZwicacugPgPuxCgLUTf9ErM0xpazVI6vNzfoEwSqZuxvUjQW3EWJxkQ3KYcPw11Aic4O0Ngd6AN6QrZ4WQ/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1)
+![image-20200713123556168](HTTP.assets/image-20200713123556168.png)
 
 ```http
 GET /article/12 HTTP/1.1
@@ -154,15 +177,15 @@ Content-Encoding: gzip
 
 ### HTTP报文首部
 
-![image-20200614154252643](C:\Users\Costco424\AppData\Roaming\Typora\typora-user-images\image-20200614154252643.png)
+![image-20200614154252643](HTTP.assets/image-20200614154252643.png)
 
 ​		HTTP协议的请求和响应报文中必定包含HTTP首部。首部内容为客户端和服务器分别处理请求和响应提供所需要的信息。对于客户端用户来说，这些信息中的大部分内容都无需亲自查看。
 
 #### 请求报文
 
-<img src="https://mmbiz.qpic.cn/mmbiz_png/NdsdouZwicacugPgPuxCgLUTf9ErM0xpaF9KxT9AicNZL1qznvK2UqrcgIRkH30LZsXmico88QVBMsZFtOjLlh8ZA/640?wx_fmt=png&amp;tp=webp&amp;wxfrom=5&amp;wx_lazy=1&amp;wx_co=1" alt="img" style="zoom: 50%;" />
+<img src="HTTP.assets/image-20200713123632106.png" alt="image-20200713123632106" style="zoom:50%;" />
 
-![image-20200614160021364](C:\Users\Costco424\AppData\Roaming\Typora\typora-user-images\image-20200614160021364.png)
+![image-20200614160021364](HTTP.assets/image-20200614160021364.png)
 
 请求报文通常由三部分组成：
 
@@ -178,7 +201,7 @@ Content-Encoding: gzip
 
 一共有八种方法选择，如下图所示。采用不同的方法获取不同的资源。
 
-<img src="https://mmbiz.qpic.cn/mmbiz_png/NdsdouZwicacugPgPuxCgLUTf9ErM0xpahliaibFI2zGBroGCks7JC6pK5iavNWbdMawVwKia1JiamobC6T5BnShTwibw/640?wx_fmt=png&amp;tp=webp&amp;wxfrom=5&amp;wx_lazy=1&amp;wx_co=1" alt="img" style="zoom: 80%;" />
+<img src="HTTP.assets/image-20200713123649585.png" alt="image-20200713123649585" style="zoom: 80%;" />
 
 常见的请求方法：
 
@@ -221,9 +244,9 @@ GET一般用于获取/查询资源信息，而POST一般用于更新资源信息
 
 #### 响应报文
 
-<img src="https://mmbiz.qpic.cn/mmbiz_png/NdsdouZwicacugPgPuxCgLUTf9ErM0xpa94tBejDFIKX79SibLfYxT0vfFXYMvgs3QeXB0HFVTz5FTIDqUhkRsHQ/640?wx_fmt=png&amp;tp=webp&amp;wxfrom=5&amp;wx_lazy=1&amp;wx_co=1" alt="img" style="zoom:50%;" />
+<img src="HTTP.assets/image-20200713123710229.png" alt="image-20200713123710229" style="zoom: 50%;" />
 
-![image-20200614161915707](C:\Users\Costco424\AppData\Roaming\Typora\typora-user-images\image-20200614161915707.png)
+![image-20200614161915707](HTTP.assets/image-20200614161915707.png)
 
 <1> 版本号：使用的HTTP什么版本
 
@@ -352,13 +375,13 @@ HTTP的body常常被分为这几种的类别
 
 ​		网络层的IP主要目的是解决路由和寻址。现在的IP地址按照"."分割，总共2的32次方大约42亿。对于计算机来说比较方便，但是对于人类来说还是不容易记忆，此时出现DNS了，他把IP地址映射为我们平时常见的"redis.org"，按照"."分割域名，从左到右级别越高，最右边为"顶级域名"。
 
-<img src="https://mmbiz.qpic.cn/mmbiz_png/NdsdouZwicacugPgPuxCgLUTf9ErM0xpao2ibLHWY8rTnULDAFgtibF4SeXQMAWgaDP3ztQT2J5LUEhWUp8zIr4VQ/640?wx_fmt=png&amp;tp=webp&amp;wxfrom=5&amp;wx_lazy=1&amp;wx_co=1" alt="img" style="zoom: 60%;" />
+<img src="HTTP.assets/image-20200713123750839.png" alt="image-20200713123750839" style="zoom: 67%;" />
 
 ​		现在TCP提供可靠(数据不丢失)且字节流(数据完整性)，而且也有方便我们记忆的域名，但是互联网资源千万种，也不知道访问什么(图片，文字，视频一大堆)，这个时候URI(统一资源标识符)出现了，那长啥样？
 
-<img src="https://mmbiz.qpic.cn/mmbiz_png/NdsdouZwicacugPgPuxCgLUTf9ErM0xpaiaCFC1q7KEl4coGPaYnzROiakib0oRNZfAgjf3Viax6OQiaicWyibgkeSHYnQ/640?wx_fmt=png&amp;tp=webp&amp;wxfrom=5&amp;wx_lazy=1&amp;wx_co=1" alt="img" style="zoom: 67%;" />
+<img src="HTTP.assets/image-20200713123840016.png" alt="image-20200713123840016" style="zoom:67%;" />
 
-![image-20200613193243744](C:\Users\Costco424\AppData\Roaming\Typora\typora-user-images\image-20200613193243744.png)
+![image-20200713124104884](HTTP.assets/image-20200713124104884.png)
 
 **协议名**：HTTP协议，另外还有ftp等协议。告知访问资源时使用什么协议。
 
@@ -392,7 +415,7 @@ file:///E:/Demo/index/
 
 ​		使用相应的压缩方法在带宽一定的情况下确实有不错的效果，但是gzip等主要针对文件压缩效果不错，但是对视频就不行了。这个时候是不是可以使用数据结构中常用的分而治之，大化小再合并的方式呢。
 
-<img src="C:\Users\Costco424\AppData\Roaming\Typora\typora-user-images\image-20200613152148852.png" alt="image-20200613152148852" style="zoom:50%;" />
+<img src="./HTTP.assets/image-20200713124127683.png" alt="image-20200713124127683" style="zoom:50%;" />
 
 ​		在报文中使用"Transer-Encoding:chunked"表示，代表body部分数据是分块传输的。另外在body中存在一个content-length字段表示body的长度，两者不能共存，另外很多时候是流式数据，body中没有指明content-length，这个时候一般就是chunked传输了。
 
@@ -406,7 +429,7 @@ file:///E:/Demo/index/
 
 <4> 使用长度0表示结束，"0\r\n\r\n"
 
-<img src="C:\Users\Costco424\AppData\Roaming\Typora\typora-user-images\image-20200613152243207.png" alt="image-20200613152243207" style="zoom: 50%;" />
+<img src="./HTTP.assets/image-20200713124140964.png" alt="image-20200713124140964" style="zoom:50%;" />
 
 ### 范围传输		
 
@@ -430,7 +453,7 @@ file:///E:/Demo/index/
 
 > HTTP是无状态、无记忆的，Cookie机制的出现让其有记忆功能，是怎么个实现呢
 
-<img src="C:\Users\Costco424\AppData\Roaming\Typora\typora-user-images\image-20200613104438303.png" alt="image-20200613104438303" style="zoom: 50%;" />
+<img src="./HTTP.assets/image-20200713124245463.png" alt="image-20200713124245463" style="zoom:67%;" />
 
 Cookie是由浏览器负责存储，并不是操作系统负责，我们换个浏览器打开同样的网页，服务器就认不出来了。
 
@@ -446,13 +469,13 @@ Cookie常见的应用一个是身份识别，一个是广告追踪，比如我�
 
 > 之前介绍的都是一问一答的情景，但是在大部分的情况下都会存在多台服务器进行通信服务。其中比较常见的就是在请求方与应答方中间增加一个中间代理。它扮演了“中间人”的角色。
 
-<img src="C:\Users\Costco424\AppData\Roaming\Typora\typora-user-images\image-20200613111109420.png" alt="image-20200613111109420" style="zoom:50%;" />
+<img src="./HTTP.assets/image-20200713124311104.png" alt="image-20200713124311104" style="zoom:67%;" />
 
 ​		代理作为中间位置，相对请求方为服务端，相当于后端服务端为请求方。代理常见的功能为负载均衡。在负载均衡中需要区分正向代理与反向代理，其中也就会涉及调度算法，比如轮询，一致性哈希等。
 
 ​		在HTTP通信过程中，可以级联多台代理服务器。请求和响应的转发会经过数台类似锁链一样连接起来的代理服务器。转发时，需要附加Via首部字段以标记处经过的主机信息。
 
-<img src="C:\Users\Costco424\AppData\Roaming\Typora\typora-user-images\image-20200613120312835.png" alt="image-20200613120312835" style="zoom: 50%;" />
+<img src="./HTTP.assets/image-20200713124321872.png" alt="image-20200713124321872" style="zoom:50%;" />
 
 ​		使用代理服务器的理由有：利用缓存技术减少网络带宽的流量，组织内部针对特定网站的访问控制，以获取访问日志为主要目的等。
 
@@ -470,7 +493,7 @@ Cookie常见的应用一个是身份识别，一个是广告追踪，比如我�
 
 #### 网关
 
-![image-20200614151802433](C:\Users\Costco424\AppData\Roaming\Typora\typora-user-images\image-20200614151802433.png)
+![image-20200614151802433](./HTTP.assets/image-20200614151802433.png)
 
 网关的工作机制和代理十分相似。而网关能使通信线路上的服务器提供非HTTP协议服务。
 
@@ -506,13 +529,13 @@ Cookie常见的应用一个是身份识别，一个是广告追踪，比如我�
 
 完整性保护：消息摘要
 
-<img src="C:\Users\Costco424\AppData\Roaming\Typora\typora-user-images\image-20200613121135797.png" alt="image-20200613121135797" style="zoom:67%;" />
+<img src="./HTTP.assets/image-20200713124345521.png" alt="image-20200713124345521" style="zoom:67%;" />
 
 
 
 HTTPS无非是在传输层和应用层中间加了一层TLS，正是TLS紧跟当代密码学的步伐，尽全力的保障用户的安全。
 
-![image-20200613121637962](C:\Users\Costco424\AppData\Roaming\Typora\typora-user-images\image-20200613121637962.png)HTTPS并非是应用层的新协议。只是HTTP通信接口部分用SSL和TLS协议代替而已。
+![image-20200613121637962](./HTTP.assets/image-20200613121637962.png)HTTPS并非是应用层的新协议。只是HTTP通信接口部分用SSL和TLS协议代替而已。
 
 HTTP直接和TCP通信，而使用SSL时，则演变成了先和SSL通信，再由SSL和TCP通信。
 
@@ -520,13 +543,13 @@ HTTP直接和TCP通信，而使用SSL时，则演变成了先和SSL通信，再�
 
 ### 安全四要素
 
-<img src="C:\Users\Costco424\AppData\Roaming\Typora\typora-user-images\image-20200613143349173.png" alt="image-20200613143349173" style="zoom:50%;" />
+<img src="./HTTP.assets/image-20200713124441542.png" alt="image-20200713124441542" style="zoom:50%;" />
 
 ### TLS
 
 可以看出在交互的过程中多了不少新东西，了解TLS,TLS由SSL握手协议，SSL修改密码规范协议，SSL警报协议，SSL记录协议组成。
 
-<img src="C:\Users\Costco424\AppData\Roaming\Typora\typora-user-images\image-20200613121649192.png" alt="image-20200613121649192" style="zoom:50%;" />
+<img src="./HTTP.assets/image-20200713124451125.png" alt="image-20200713124451125" style="zoom:50%;" />
 
 **SSL握手协议：**相对于三次握手
 
@@ -542,19 +565,19 @@ HTTP直接和TCP通信，而使用SSL时，则演变成了先和SSL通信，再�
 
 > 对称加密，顾名思义，加密方与解密方使用同一钥匙(秘钥)。具体一些就是，发送方通过使用相应的加密算法和秘钥，对将要发送的信息进行加密；对于接收方而言，使用解密算法和相同的秘钥解锁信息，从而有能力阅读信息。
 
-<img src="C:\Users\Costco424\AppData\Roaming\Typora\typora-user-images\image-20200613142720491.png" alt="image-20200613142720491" style="zoom: 50%;" />
+<img src="HTTP.assets/image-20200713124507048.png" alt="image-20200713124507048" style="zoom:50%;" />
 
 #### 非对称加密
 
 > 在对称加密中，发送方与接收方使用相同的秘钥。那么在非对称加密中则是发送方与接收方使用的不同的秘钥。其主要解决的问题是防止在秘钥协商的过程中发生泄漏。非对称密钥其实主要解决了密钥分发的难题。
 
-<img src="C:\Users\Costco424\AppData\Roaming\Typora\typora-user-images\image-20200613142801174.png" alt="image-20200613142801174" style="zoom:50%;" />
+<img src="HTTP.assets/image-20200713124515619.png" alt="image-20200713124515619" style="zoom:50%;" />
 
 #### 混合加密
 
 > 非对称加密算法，大多数是从数学问题演变而来，运算速度较慢。混合加密所谓取长补短。通信过程中使用RSA等解决密钥交换问题，然后使用随机数产生的在对称算法中的会话密钥，最后使用加密。对方使用私钥解密得到的密文取出会话秘钥，这样就实现了密钥交换。
 
-<img src="C:\Users\Costco424\AppData\Roaming\Typora\typora-user-images\image-20200613143228356.png" alt="image-20200613143228356" style="zoom:50%;" />
+<img src="HTTP.assets/image-20200713124525106.png" alt="image-20200713124525106" style="zoom:50%;" />
 
 通过混淆加密等方式完成了机密性任务，作为Hack只需要伪造发布公钥或者作为之间人窃听密文。但是我们知道安全是四要素，还需要保证数据的完整性，身份认证等。
 
@@ -562,17 +585,17 @@ HTTP直接和TCP通信，而使用SSL时，则演变成了先和SSL通信，再�
 
 > 摘要算法可以理解为一种特殊的"单向"加密算法，无密钥，不可逆。在平时项目中，应该大家都是用过MD5，SHA-1。但是在TLS中使用SHA-2。
 
-<img src="C:\Users\Costco424\AppData\Roaming\Typora\typora-user-images\image-20200613143506311.png" alt="image-20200613143506311" style="zoom:50%;" />![image-20200613143520916](C:\Users\Costco424\AppData\Roaming\Typora\typora-user-images\image-20200613143520916.png)<img src="C:\Users\Costco424\AppData\Roaming\Typora\typora-user-images\image-20200613143506311.png" alt="image-20200613143506311" style="zoom:50%;" />![image-20200613143520916](C:\Users\Costco424\AppData\Roaming\Typora\typora-user-images\image-20200613143520916.png)
+<img src="HTTP.assets/image-20200713124622691.png" alt="image-20200713124622691" style="zoom:50%;" /><img src="HTTP.assets/image-20200713124726747.png" alt="image-20200713124726747" style="zoom:50%;" />
 
 ### CA证书
 
 数字证书认证机构处于客户端和服务器双方都可信赖的第三方机构的立场上。
 
-<img src="C:\Users\Costco424\AppData\Roaming\Typora\typora-user-images\image-20200614165534736.png" alt="image-20200614165534736" style="zoom:80%;" />
+<img src="HTTP.assets/image-20200614165534736.png" alt="image-20200614165534736" style="zoom:80%;" />
 
 HTTPS的整体过程分为证书验证和数据传输阶段。
 
-<img src="C:\Users\Costco424\AppData\Roaming\Typora\typora-user-images\image-20200613154430937.png" alt="image-20200613154430937" style="zoom:50%;" />
+<img src="HTTP.assets/image-20200613154430937.png" alt="image-20200613154430937" style="zoom:50%;" />
 
 #### CA证书内容
 
@@ -596,7 +619,7 @@ HTTPS的整体过程分为证书验证和数据传输阶段。
 
 ​		首先我们假设不存在认证机构，任何人都可以制作证书，这带来的安全风险便是经典的 “中间人攻击” 问题。 
 
-<img src="C:\Users\Costco424\AppData\Roaming\Typora\typora-user-images\image-20200613155526268.png" alt="image-20200613155526268" style="zoom: 67%;" />
+<img src="HTTP.assets/image-20200613155526268.png" alt="image-20200613155526268" style="zoom: 67%;" />
 
 #### 如何验证证书合法性
 
@@ -611,9 +634,9 @@ HTTPS的整体过程分为证书验证和数据传输阶段。
 
 ### HTTPS请求建立连接过程
 
-![image-20200614182548052](C:\Users\Costco424\AppData\Roaming\Typora\typora-user-images\image-20200614182548052.png)
+![image-20200614182548052](HTTP.assets/image-20200614182548052.png)
 
-<img src="C:\Users\Costco424\AppData\Roaming\Typora\typora-user-images\image-20200613143545745.png" alt="image-20200613143545745" style="zoom:50%;" />
+<img src="HTTP.assets/image-20200713124804168.png" alt="image-20200713124804168" style="zoom:50%;" />
 
 注意：
 
@@ -624,15 +647,15 @@ HTTPS的整体过程分为证书验证和数据传输阶段。
 - Client对算法进行确认
 - Server对算法进行确认
 
-![image-20200614183506815](C:\Users\Costco424\AppData\Roaming\Typora\typora-user-images\image-20200614183506815.png)
+![image-20200614183506815](HTTP.assets/image-20200614183506815.png)
 
 根据wireshak结果，对TLS进一步剖析。TCP三次握手建立连接，作为礼貌，Client先打招呼"Client Hello"。里面包含了Client的版本号、所支持的密码套件和随机数，如下图所示
 
-<img src="C:\Users\Costco424\AppData\Roaming\Typora\typora-user-images\image-20200613144134261.png" alt="image-20200613144134261" style="zoom: 80%;" />
+<img src="HTTP.assets/image-20200613144134261.png" alt="image-20200613144134261" style="zoom: 80%;" />
 
 Server端表示尊重，回复"Server Hello",同时进行版本校对，给出随机数(Server Random)，从Client算法列表中选择一个密码套件，在这里选择的"TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256"。
 
-<img src="C:\Users\Costco424\AppData\Roaming\Typora\typora-user-images\image-20200613144157020.png" alt="image-20200613144157020" style="zoom:80%;" />
+<img src="HTTP.assets/image-20200613144157020.png" alt="image-20200613144157020" style="zoom:80%;" />
 
 这里的"TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256"什么意思呢
 
@@ -640,17 +663,17 @@ Server端表示尊重，回复"Server Hello",同时进行版本校对，给出�
 
 双方通过证书验证身份。因为本机服务器选用了ECDHE算法，为了实现密钥交换算法，它会发送证书后把椭圆曲线的公钥（Server Params）连带"Server Key Exchange"消息发送出去。
 
-<img src="C:\Users\Costco424\AppData\Roaming\Typora\typora-user-images\image-20200613145332081.png" alt="image-20200613145332081" style="zoom: 80%;" />
+<img src="HTTP.assets/image-20200613145332081.png" alt="image-20200613145332081" style="zoom: 50%;" />
 
 意思是，刚才混合加密套件比较复杂，给你个算法参数，好好记住，别弄丢了。
 
-<img src="C:\Users\Costco424\AppData\Roaming\Typora\typora-user-images\image-20200613145410346.png" alt="image-20200613145410346"  />
+<img src="HTTP.assets/image-20200613145410346.png" alt="image-20200613145410346"  />
 
 随后服务端回复"hello done"告知打招呼完毕
 
 打完招呼完毕后，客户端对证书进行核实。然后根据密码套件也生成椭圆曲线的公钥，用"Client Key Exchange"消息发给服务器
 
-![image-20200613145456577](C:\Users\Costco424\AppData\Roaming\Typora\typora-user-images\image-20200613145456577.png)
+![image-20200613145456577](HTTP.assets/image-20200613145456577.png)
 
 此时客户端和服务端都有了密钥交换的两个参数(Client Params、ServerParams），然后通过 ECDHE 算法算出了一个新的值，叫“Pre-Master”
 
@@ -672,51 +695,9 @@ Server端表示尊重，回复"Server Hello",同时进行版本校对，给出�
 
 > 这里说的识别，通过代码层面(libpcap封装)实现HTTP的识别，也能进一步体现TCP/IP协议栈的分层特性。先看回忆一下IP头部格式。
 
-<img src="C:\Users\Costco424\AppData\Roaming\Typora\typora-user-images\image-20200613151145272.png" alt="image-20200613151145272" style="zoom:67%;" />
+<img src="HTTP.assets/image-20200713124906677.png" alt="image-20200713124906677" style="zoom:67%;" />
 
 ​		注意头部中的协议字段，如果此字段值为0x0600则为TCP分组。当知道了是TCP分组后，是不是可以通过TCP头部中端口(80)就可以判断为HTTP呢，不能的，很多情况都会使用动态端口的方式进行部署。此时可以通过HTTP中的关键字进行判断。如果为HTTP，再通过头部字段中的"Content-type"，charset等确认文本信息，编码方式，最后采用解码算法进行还原。
-
-## HTTP面试题测试
-
-- Get和Post区别
-
-- HTTP与HTTPS区别
-
-- HTTP通信过程
-
-- 游览器输入一个地址。到页面展示中间经历了哪些步骤？
-
-- cookies机制和session机制的区别：
-
-- HTTP请求报文与响应报文格式
-
-- 一次完整的HTTP请求所经历的7个步骤
-
-- HTTP优化方案
-
-- 不同版本的HTTP区别
-
-- HTTP优点缺点
-
-- URI和URL的区别
-
-- 如何判断是否为http
-
-- HTTP 1.1引入分块传输编码提供了以下几点好处
-
-- 长连接与短连接的区别，以及应用场景
-
-- 常见web攻击
-
-- 站内跳转和外部重定向有何区别
-
-- HTTP的keep-alive是干什么的？
-
-- 关于Http 2.0 你知道多少？
-
-- 讲讲304缓存的原理
-
-- HTTP与RPC异同
 
 
 
